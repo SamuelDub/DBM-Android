@@ -1,0 +1,24 @@
+<!-- <ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>List</ion-title>
+  </ion-navbar>
+</ion-header> -->
+
+<ion-content class="center">
+  <h1 class="title">
+    Set your bot token!
+  </h1>
+
+  <ion-item class="tokenInput">
+    <ion-label floating>Bot Token</ion-label>
+    <ion-input type="text" value="" [(ngModel)]="token" ></ion-input>
+  </ion-item>
+
+  <button ion-button secondary class="confirmInput" (click)="setToken()">
+    Set Token!
+  </button>
+
+</ion-content>
