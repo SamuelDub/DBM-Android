@@ -3,6 +3,9 @@ import { Storage } from '@ionic/storage';
 import { NavController, MenuController, ActionSheetController, PopoverController } from 'ionic-angular';
 import { SettingsPage } from '../settings/settings';
 import { SelectionsPage } from '../selections/selections'
+import * as Discord from 'discord.js';
+
+const bot = new Discord.Client();
 
 @Component({
   selector: 'page-home',
@@ -19,11 +22,22 @@ export class HomePage {
         if (val == null) {
           navCtrl.push(SettingsPage);
         } else {
-          console.log(val)
+          bot.login(val).then(function() {
+            console.log(val);
+            console.log("Logged In");
+          });
         }
       })
     });
-  
+
+    bot.on('message', async (message: Discord.Message) => {
+      let reaction: Discord.MessageReaction = await message.react('💰');
+      let reactionUsers = await reaction.fetchUsers();
+      // Filter the user with the name 'MarketBot' (this bot) from the list of users
+      let me: Discord.User = reactionUsers.filter(_ => _.username === 'MarketBot')[0];
+      console.log(me);
+      await reaction.remove(me).catch(error => console.error(error));
+  });
 
   }
 
@@ -34,6 +48,10 @@ export class HomePage {
   presentPopover() {
     let popover = this.popoverCtrl.create(SelectionsPage);
     popover.present();
+  }
+  
+  removeToken() {
+    this.navCtrl.push(SettingsPage);
   }
 
   // presentActionSheet() {
