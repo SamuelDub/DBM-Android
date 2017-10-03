@@ -2,16 +2,17 @@ import { Component } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { NavController, MenuController, ActionSheetController, PopoverController } from 'ionic-angular';
 import { SettingsPage } from '../settings/settings';
-import { SelectionsPage } from '../selections/selections'
-import * as Discord from 'discord.js';
+import { SelectionsPage } from '../selections/selections';
 
-const bot = new Discord.Client();
+// const bot = new Discord.Client();
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
 export class HomePage {
+
+  bot: any;
 
   constructor(public navCtrl: NavController, public actionSheetCtrl: ActionSheetController, public menu: MenuController, public popoverCtrl: PopoverController, public storage: Storage) {
 
@@ -22,22 +23,10 @@ export class HomePage {
         if (val == null) {
           navCtrl.push(SettingsPage);
         } else {
-          bot.login(val).then(function() {
-            console.log(val);
-            console.log("Logged In");
-          });
+          console.log(val)
         }
       })
     });
-
-    bot.on('message', async (message: Discord.Message) => {
-      let reaction: Discord.MessageReaction = await message.react('💰');
-      let reactionUsers = await reaction.fetchUsers();
-      // Filter the user with the name 'MarketBot' (this bot) from the list of users
-      let me: Discord.User = reactionUsers.filter(_ => _.username === 'MarketBot')[0];
-      console.log(me);
-      await reaction.remove(me).catch(error => console.error(error));
-  });
 
   }
 
